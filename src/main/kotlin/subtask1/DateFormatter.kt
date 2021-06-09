@@ -1,20 +1,16 @@
 package subtask1
 
 import java.text.ParseException
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.*
 
 
 fun main() {
     val dateFormatter = DateFormatter()
     print(
-        dateFormatter.toTextDay("29", "2", "2021")
+        dateFormatter.toTextDay("35", "02", "2021")
     )
-
-
 }
 
 class DateFormatter {
@@ -22,23 +18,21 @@ class DateFormatter {
     // TODO: Complete the following function
     fun toTextDay(day: String, month: String, year: String): String {
         //throw NotImplementedError("Not implemented")
-        if (isInputDataValid(day, month, year)) {
+        if (isDateExist(day, month, year)) {
             return "$day ${getMonthName(month)}, ${getDayNameOfWeek(day, month, year)}"
         } else {
             return "Такого дня не существует"
         }
-
-
     }
 
     @Throws(ParseException::class)
-    fun isInputDataValid(day: String, month: String, year: String): Boolean {
+    fun isDateExist(day: String, month: String, year: String): Boolean {
         val dateStringForParse =
             addZerroLeft(day, 2) + addZerroLeft(month, 2) + addZerroLeft(year, 4)
         val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
         try {
             val date = formatter.parse(dateStringForParse)
-            return formatter.format(date) == dateStringForParse
+            return dateStringForParse.equals(formatter.format(date))
         } catch (e: DateTimeParseException) {
             return false
         }
@@ -86,5 +80,4 @@ class DateFormatter {
             "воскресенье"
         )
     }
-
 }
