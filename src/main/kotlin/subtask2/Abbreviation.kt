@@ -13,8 +13,8 @@ class Abbreviation {
 
         var lastFindNumber: Int = -1
         var currFindNumber: Int
-        for (i in 0 until b.length) {
-            currFindNumber = a.indexOf(b[i], 0, true)
+        for (element in b) {
+            currFindNumber = a.indexOf(element, 0, true)
             if (currFindNumber <= lastFindNumber) {
                 return ANSWER_NO
             }
@@ -24,7 +24,7 @@ class Abbreviation {
     }
 
     companion object{
-        val ANSWER_YES="YES"
-        val ANSWER_NO="NO"
+        const val ANSWER_YES="YES"
+        const val ANSWER_NO="NO"
     }
 }

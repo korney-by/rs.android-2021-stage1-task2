@@ -18,44 +18,47 @@ class DateFormatter {
     // TODO: Complete the following function
     fun toTextDay(day: String, month: String, year: String): String {
         //throw NotImplementedError("Not implemented")
-        if (isDateExist(day, month, year)) {
-            return "$day ${getMonthName(month)}, ${getDayNameOfWeek(day, month, year)}"
+        return if (isDateExist(day, month, year)) {
+            "$day ${getMonthName(month)}, ${getDayNameOfWeek(day, month, year)}"
         } else {
-            return "Такого дня не существует"
+            "Такого дня не существует"
         }
     }
 
     @Throws(ParseException::class)
     fun isDateExist(day: String, month: String, year: String): Boolean {
-        val dateStringForParse =
-            addZerroLeft(day, 2) + addZerroLeft(month, 2) + addZerroLeft(year, 4)
-        val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
-        try {
+        val dateStringForParse = getDateStringForParse(day, month, year)
+        val formatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
+        return try {
             val date = formatter.parse(dateStringForParse)
-            return dateStringForParse.equals(formatter.format(date))
+            dateStringForParse == formatter.format(date)
         } catch (e: DateTimeParseException) {
-            return false
+            false
         }
     }
 
-    fun addZerroLeft(value: String, length: Int): String {
+    private fun addZerroLeft(value: String, length: Int): String {
         return "0".repeat(length - value.length) + value
     }
 
-    fun getMonthName(mothNumber: String): String {
+    private fun getMonthName(mothNumber: String): String {
         return ARR_MONTH_NAME[mothNumber.toInt() - 1]
     }
 
-    fun getDayNameOfWeek(day: String, month: String, year: String):String {
-        val dateStringForParse =
-            addZerroLeft(day, 2) + addZerroLeft(month, 2) + addZerroLeft(year, 4)
-        val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
+    private fun getDayNameOfWeek(day: String, month: String, year: String): String {
+        val dateStringForParse = getDateStringForParse(day, month, year)
+        val formatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
         val date = LocalDate.parse(dateStringForParse, formatter)
-        return ARR_DAY_NAME[ date.dayOfWeek.value - 1]
+        return ARR_DAY_NAME[date.dayOfWeek.value - 1]
     }
 
+    private fun getDateStringForParse(day: String, month: String, year: String): String {
+        return addZerroLeft(day, 2) + addZerroLeft(month, 2) + addZerroLeft(year, 4)
+    }
 
     companion object {
+        const val DATE_PATTERN = "ddMMyyyy"
+
         val ARR_MONTH_NAME = arrayOf(
             "января",
             "февраля",
